@@ -1,0 +1,40 @@
+Class Organization
+
+Classes:
+
+Board
+  
+  Properties:
+  	Score
+  	NumPlayers
+  	NumPieces
+  	HomeArmLen = 6
+  	WidthBwPlayers = 3
+  	BoardLen = HomeArmLen*8 + (WidthBwPlayers-2)*4
+
+  Methods:
+  	updateScore
+
+
+Player
+  
+  Properties:
+  	Base
+  	NumPieces
+  	PieceN # dynamic property
+  	Score
+
+  Methods:
+  	rollDie
+    makeMove
+    backToStart
+
+Piece
+
+  Properties:
+    Player
+	BoardPos
+	HomePos # based on Player
+
+
+Rules: 
