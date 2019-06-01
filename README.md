@@ -1,0 +1,1 @@
+This repository contains code to create a simple ludo simulator in Python to settle a bet between Pip and Anna.
