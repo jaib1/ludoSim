@@ -7,8 +7,7 @@ class Piece():
     Attributes:
     -----------
         __playerID: the ID of the player the piece belongs to
-        __startPos: The board space number associated with the board space a 
-          player's piece starts on upon leaving the home base with a roll of 6.
+        __pieceNum: the number of the piece
         __boardPos: the current board space the piece occupies
         __scoreArmPos: the current score arm space the piece occupies
         __moveCount: the current number of spaces the piece has moved
@@ -19,7 +18,7 @@ class Piece():
     # make them hidden, using `__`
     __slots__ = '__playerID', '__boardPos', '__scoreArmPos', '__moveCount'
         
-    def __init__(self, playerID):
+    def __init__(self, playerID, pieceNum):
         """
         The constructor requires the id of the player the piece belongs to.
         
@@ -29,8 +28,11 @@ class Piece():
         
         Examples
         --------
-        p = Piece(1)
+        p = Piece(1,1)
+        
+        p = Piece(pieceNum=2, playerID=2)
         
         """
         
         self.__playerID = playerID
+        self.__pieceNum = pieceNum
