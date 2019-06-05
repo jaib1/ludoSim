@@ -28,12 +28,13 @@ Board
 Player
   
   Attributes:
-  	Base
-  	NumPieces
-  	StartPieces
-  	ActivePieces
+  	HomeBase
+  	StartPos
+  	ScoreBasePos
+  	Pieces
   	HomePieces
-  	PieceN # dynamic property
+  	ActivePieces
+  	ScorePieces
   	Score
 
   Methods:
@@ -52,10 +53,10 @@ Player
 Piece
 
   Attributes:
-    Player
+    PlayerID
 	BoardPos = 0
 	HomePos = 0
-	MoveCount # if MoveCount == BoardLen then go home
+	MoveCount # if MoveCount == BoardLen then go to score base
   
   Methods:
     backToStart
