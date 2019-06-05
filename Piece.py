@@ -9,8 +9,6 @@ class Piece():
         __playerID: the ID of the player the piece belongs to
         __startPos: The board space number associated with the board space a 
           player's piece starts on upon leaving the home base with a roll of 6.
-      	__scoreBasePos: The board space number associated with the last board 
-          space a player's piece is on before entering the score arm.
         __boardPos: the current board space the piece occupies
         __scoreArmPos: the current score arm space the piece occupies
         __moveCount: the current number of spaces the piece has moved

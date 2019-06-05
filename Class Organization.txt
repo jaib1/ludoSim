@@ -55,7 +55,7 @@ Piece
   Attributes:
     PlayerID
 	BoardPos = 0
-	HomePos = 0
+	ScoreArmPos = 0
 	MoveCount # if MoveCount == BoardLen then go to score base
   
   Methods:
@@ -75,3 +75,5 @@ Rules:
 - repeat turn on 6
 - 6 moves piece to board position "1"
 - form blocks
+
+*Note: create an array or a procedure that allows cycling through the board spaces. Be sure to note that no player's pieces will ever access all board spaces (instead, board spaces - 1)
