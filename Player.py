@@ -17,17 +17,17 @@ class Player():
       	__activePieces: The player's pieces currently on the ludo board
       	__scorePieces: The player's pieces currently in their score base
       	__score: The player's current score
-        __spacesArray: see Board.__spacesArray
+        __boardSpaces: see `Board.__boardSpaces`
     """
     
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
-    __slots__ = '__id', '__startPos', '__scoreBasePos', '__pieces', \
-        '__homePieces', '__activePieces', '__scorePieces', '__score', \
-        '__spacesArray'
+    __slots__ = ('__id', '__startPos', '__scoreBasePos', '__pieces', 
+        '__homePieces', '__activePieces', '__scorePieces', '__score', 
+        '__spacesArray')
         
-    def __init__(self, id, numPieces, startPos, spacesArray):
+    def __init__(self, id, numPieces, startPos, boardSpaces):
         """
         The constructor requires the home base position, the number of 
         pieces, and the start position upon leaving the home base on a roll of 
@@ -43,8 +43,7 @@ class Player():
         --------
         p = Player(1,4,1)
         
-        p = Player(startPos=14, numPieces=5, id=2)
-        
+        p = Player(startPos=14, numPieces=5, id=2)      
         """
         
         self.__id = id
@@ -54,31 +53,85 @@ class Player():
         self.__homePieces = self.__pieces
         self.__activePieces = [] 
         self.__scorePieces = []
-        self.__spacesArray = spacesArray
+        self.__score = 0
+        self.__boardSpaces = boardSpaces
+#        self.__spacesArray = spacesArray
     
     def makeMove(self, roll):
         """
-        `makeMove` takes a simulated dice roll and subsequently moves a piece,
-        if possible, for the player.
+        Takes a simulated die roll and subsequently moves a piece, if
+        possible, for the player.
         
+        Parameters
+        ----------
+        roll: a simulated die roll
+        
+        Examples
+        --------
+        roll = np.random.randint(1,7)
+        p.makeMove(roll)
+        
+        p.makeMove(6)   
         """
-        # make move
+        
+        # special case if roll == 6
         if roll == 6:
+            
             # if no pieces in play
             if not(self.__activePieces): 
-                # move a piece out from home base
-                self.__activePieces.append(self.__homePieces[-1].pop())
+                # move a piece out from home base and get its piece num
+                self.__activePieces.append(self.__homePieces.pop())
+#                pieceNum = self.__activePieces[-1].__pieceNum
                 # move that piece to the start position
-                self.__pieces[self.__activePieces[-1].pieceNum]._Piece.__boardPos = self.__startPos
-                
-        else:
+                self.__activePieces[-1].__boardPos = self.__startPos
+#                self.__pieces[pieceNum].__boardPos = self.__startPos
+                # update that pieces move count
+                self.__activePieces[-1].__moveCount = 1
+#                self.__pieces[pieceNum].__moveCount = 1 
+            else:
+                self.moveHeuristic(roll)
+        
+        else:         
             if not(self.__activePieces): # if no pieces in play 
                 return 
-            else:
+            else: # if active pieces
+                self.moveHeuristic(roll)
+
+    
+    def moveHeuristic(self, roll):
+        """
+        Uses heuristics to pick which piece to move, based on trying to hit
+        another player's piece, and not moving within a die roll of another 
+        player's piece
+        """
         
-        # if our new val is greater than the number of board spaces, loop
-        # around to board space 1. have move count. then relative val.
-                
-        # newPosVal = self.__pieces[pieceToMove].__boardPos += roll
-        # self.__pieces[pieceToMove].__boardPos = self.__spacesArray[newPosVal]
+        # check to see which pieces CAN move
+        posMoves = len(self.__activePieces) - 1
+        
+        # label the possible moves, get `pieceToMove`
+        pieceToMove = []
+        while posMoves >= 0:
+            
+            # check to see if we can hit another piece
+            ourPos = self.__activePieces(posMoves).__boardPos
+            othersPos = 
+
+            posMoves -= 1
+        
+        # if no possible moves, return
+        if not(pieceToMove):
+            return
+        # the move: update piece `__moveCount`, `__boardPos`, `__scoreArmPos`
+        self.__pieces[pieceToMove].__moveCount += roll
+        self.__pieces[pieceToMove].__boardPos = ( 
+            (self.__startPos + self.__pieces[pieceToMove].__moveCount) 
+            % self.__boardSpaces) 
+        # if we are in the score arm...
+        if self.__pieces[pieceToMove].__moveCount > self.__boardSpaces:
+            # update `__scoreArmPos`
+            self.__pieces[pieceToMove].__scoreArmPos = (
+                    self.__pieces[pieceToMove].__moveCount - self.__boardSpaces)
+            # remove piece from board
+            self.__pieces[pieceToMove].__boardPos = 0
+            
         

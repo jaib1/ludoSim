@@ -55,7 +55,7 @@ Piece
     PlayerID
 	  BoardPos = 0
 	  ScoreArmPos = 0
-	  MoveCount # if MoveCount == BoardLen then go to score base
+	  MoveCount # if MoveCount == BoardLen-2, then go to score base
   
   Methods:
     backToStart
@@ -73,4 +73,5 @@ Rules:
 - form blocks
 
 Gameplay:
-- check to see if entering home arm
+- check to see if entering score arm
+- check to see if score arm move is possible

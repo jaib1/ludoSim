@@ -48,9 +48,9 @@ class Board():
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
-    __slots__ = '__players', '__piecePositions', '__startPositions', \
-        '__scores', '__boardSpaces', '__spacesArray', '__winner', \ 
-        '__numPlayers', '__numPieces', '__scoreArmSpaces', '__widthSpaces'
+    __slots__ = ('__players', '__piecePositions', '__startPositions', 
+        '__scores', '__boardSpaces', '__spacesArray', '__winner', 
+        '__numPlayers', '__numPieces', '__scoreArmSpaces', '__widthSpaces')
     
     def __init__(self, numPlayers=2, numPieces=4, scoreArmSpaces=5, 
                  widthSpaces=3):
@@ -74,20 +74,21 @@ class Board():
         
         b = Board(numPlayers=4)
         
-        b = Board(4,5,8,4)
-        
+        b = Board(4,5,8,4)      
         """
         
         self.__boardSpaces = (scoreArmSpaces+1)*8 + (widthSpaces-2)*4
-        bSArray = np.arange(1, self.__boardSpaces+1)
-        self.__spacesArray = np.concatenate((bSArray, bSArray))
+#        bSArray = np.arange(1, self.__boardSpaces+1)
+#        self.__spacesArray = np.concatenate((bSArray, bSArray))
         # build `__startPositions` array with comprehension
         self.__startPositions = [(i * (2*(scoreArmSpaces+1)+1) -
-                                (2*(scoreArmSpaces+1))) for i in
-                                range(0,numPlayers)]
+                                    (2*(scoreArmSpaces+1))) for i in
+                                    range(0,numPlayers)]
         # build `__players` array with comprehension
-        self.__players = [Player(i,numPieces, self.__startPositions[i], self.__spacesArray) 
-                         for i in range(0,numPlayers)]    
+        self.__players = [Player(i,numPieces, self.__startPositions[i], 
+                             self.__boardSpaces) for i in range(0,numPlayers)]
+#        self.__players = [Player(i,numPieces, self.__startPositions[i], self.__spacesArray) 
+#                         for i in range(0,numPlayers)]    
         self.__piecePositions = np.zeros([numPlayers, numPieces], dtype=int)
         self.__scores = np.zeros([numPlayers,1], dtype=int) 
         self.__numPlayers = numPlayers 
@@ -113,10 +114,9 @@ class Board():
             if not(roll == 6):
                 turnNumber +=1 
             
-            # self.updateBoard()
+            self.updateBoard()
              
-            
-    
+               
     def updateBoard(self):
         """
         Updates the game board (`piecePositions`) after each move.

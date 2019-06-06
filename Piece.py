@@ -8,9 +8,9 @@ class Piece():
     -----------
         __playerID: the ID of the player the piece belongs to
         __pieceNum: the number of the piece
+        __moveCount: the current number of spaces the piece has moved
         __boardPos: the current board space the piece occupies
         __scoreArmPos: the current score arm space the piece occupies
-        __moveCount: the current number of spaces the piece has moved
     """
     
     # define and limit attributes:
