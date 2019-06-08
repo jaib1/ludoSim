@@ -77,24 +77,23 @@ class Board():
         b = Board(4,5,8,4)      
         """
         
-        self.__boardSpaces = (scoreArmSpaces+1)*8 + (widthSpaces-2)*4
-#        bSArray = np.arange(1, self.__boardSpaces+1)
-#        self.__spacesArray = np.concatenate((bSArray, bSArray))
-        # build `__startPositions` array with comprehension
-        self.__startPositions = [(i * (2*(scoreArmSpaces+1)+1) -
-                                    (2*(scoreArmSpaces+1))) for i in
-                                    range(0,numPlayers)]
-        # build `__players` array with comprehension
-        self.__players = [Player(i,numPieces, self.__startPositions[i], 
-                             self.__boardSpaces) for i in range(0,numPlayers)]
-#        self.__players = [Player(i,numPieces, self.__startPositions[i], self.__spacesArray) 
-#                         for i in range(0,numPlayers)]    
-        self.__piecePositions = np.zeros([numPlayers, numPieces], dtype=int)
+        # list of lists of piece positions, with [playerID, piecePosition]
+        self.__piecePositions = [[player, 0] for player in range(0,numPlayers) 
+                                for piece in range(0,numPieces)]
         self.__scores = np.zeros([numPlayers,1], dtype=int) 
         self.__numPlayers = numPlayers 
         self.__numPieces = numPieces 
         self.__scoreArmSpaces = scoreArmSpaces 
         self.__widthSpaces = widthSpaces
+        self.__boardSpaces = (scoreArmSpaces+1)*8 + (widthSpaces-2)*4
+        # build `__startPositions` array with comprehension
+        self.__startPositions = [(i * (2*(scoreArmSpaces+1)+1) -
+                                (2*(scoreArmSpaces+1))) for i in 
+                                range(0,numPlayers)]
+        # build `__players` array with comprehension
+        self.__players = [Player(i, numPieces, self.__startPositions[i], 
+                         self.__boardSpaces, self.__piecePositions) 
+                         for i in range(0,numPlayers)] 
         self.__winner = []
         
         

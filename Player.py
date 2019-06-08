@@ -1,5 +1,7 @@
-import numpy as np
 from ludoSim import Piece
+import numpy as np
+import random
+#import pdb; pdb.set_trace()
 
 class Player():
     """
@@ -18,6 +20,7 @@ class Player():
       	__scorePieces: The player's pieces currently in their score base
       	__score: The player's current score
         __boardSpaces: see `Board.__boardSpaces`
+        __piecePositions: see `Board.__piecePositions`
     """
     
     # define and limit attributes:
@@ -25,9 +28,9 @@ class Player():
     # make them hidden, using `__`
     __slots__ = ('__id', '__startPos', '__scoreBasePos', '__pieces', 
         '__homePieces', '__activePieces', '__scorePieces', '__score', 
-        '__spacesArray')
+        '__spacesArray', '__boardSpaces', '__piecePositions')
         
-    def __init__(self, id, numPieces, startPos, boardSpaces):
+    def __init__(self, id, numPieces, startPos, boardSpaces, piecePositions):
         """
         The constructor requires the home base position, the number of 
         pieces, and the start position upon leaving the home base on a roll of 
@@ -41,21 +44,27 @@ class Player():
         
         Examples
         --------
-        p = Player(1,4,1)
+        p = Player(1,4,1,50,[0,0,0,0])
         
-        p = Player(startPos=14, numPieces=5, id=2)      
+        p = Player(startPos=14, boardSpaces=50, piecePositions=[0,0,0,0], numPieces=5, id=2)      
         """
         
         self.__id = id
         self.__startPos = startPos
         # build `pieces` array with comprehension
-        self.__pieces = [Piece(id,i) for i in range(0,numPieces)]
+        self.__pieces = [Piece(id, i) for i in range(0,numPieces)]
         self.__homePieces = self.__pieces
         self.__activePieces = [] 
         self.__scorePieces = []
         self.__score = 0
         self.__boardSpaces = boardSpaces
+        self.__piecePositions = piecePositions;
 #        self.__spacesArray = spacesArray
+        
+    def __iter__(self):
+        """
+        Generator Function to use class as iterator.
+        """
     
     def makeMove(self, roll):
         """
@@ -81,13 +90,10 @@ class Player():
             if not(self.__activePieces): 
                 # move a piece out from home base and get its piece num
                 self.__activePieces.append(self.__homePieces.pop())
-#                pieceNum = self.__activePieces[-1].__pieceNum
                 # move that piece to the start position
-                self.__activePieces[-1].__boardPos = self.__startPos
-#                self.__pieces[pieceNum].__boardPos = self.__startPos
+                self.__activePieces[-1]._Piece__boardPos = self.__startPos
                 # update that pieces move count
-                self.__activePieces[-1].__moveCount = 1
-#                self.__pieces[pieceNum].__moveCount = 1 
+                self.__activePieces[-1]._Piece__moveCount = 1
             else:
                 self.moveHeuristic(roll)
         
@@ -105,22 +111,32 @@ class Player():
         player's piece
         """
         
-        # check to see which pieces CAN move
-        posMoves = len(self.__activePieces) - 1
+        # check to see if we can hit another piece:
         
-        # label the possible moves, get `pieceToMove`
+        # get positions of all other pieces using comprehension
+        othersPosns = [self.__piecePositions[pr][1] for pr
+                    in range(0, len(self.__piecePositions)) 
+                    if self.__piecePositions[pr][0] != self.__id
+                    & self.__piecePositions[pr][1] != 0]
+        
+        # out of all possible moves, get `pieceToMove`:
+        
         pieceToMove = []
-        while posMoves >= 0:
-            
-            # check to see if we can hit another piece
-            ourPos = self.__activePieces(posMoves).__boardPos
-            othersPos = 
-
-            posMoves -= 1
+        # get our pieces, and our potential positions
+        ourPieceNums, ourRollPosns = map(list, zip(
+                              *[[self.__activePieces[i]._Piece__pieceNum, 
+                              self.__activePieces[i]._Piece__boardPos + roll] 
+                              for i in range(0, len(self.__activePieces))]))
+        canHit = [i for i in ourRollPosns if i in othersPosns]
+        if canHit:
+            pieceToMove = ourPieceNums[ourRollPosns.index(canHit[0])]
+        else: # see if there is a block, or if we would go past score arm
+            pieceToMove = random.choice(ourPieceNums)
         
         # if no possible moves, return
         if not(pieceToMove):
             return
+        
         # the move: update piece `__moveCount`, `__boardPos`, `__scoreArmPos`
         self.__pieces[pieceToMove].__moveCount += roll
         self.__pieces[pieceToMove].__boardPos = ( 
@@ -130,7 +146,7 @@ class Player():
         if self.__pieces[pieceToMove].__moveCount > self.__boardSpaces:
             # update `__scoreArmPos`
             self.__pieces[pieceToMove].__scoreArmPos = (
-                    self.__pieces[pieceToMove].__moveCount - self.__boardSpaces)
+                self.__pieces[pieceToMove].__moveCount - self.__boardSpaces)
             # remove piece from board
             self.__pieces[pieceToMove].__boardPos = 0
             

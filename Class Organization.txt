@@ -75,3 +75,8 @@ Rules:
 Gameplay:
 - check to see if entering score arm
 - check to see if score arm move is possible
+
+- can't move a piece when:
+1) all available pieces in home
+2) there is a block
+3) would go past score arm

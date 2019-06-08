@@ -16,7 +16,8 @@ class Piece():
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
-    __slots__ = '__playerID', '__boardPos', '__scoreArmPos', '__moveCount'
+    __slots__ = ('__playerID', '__pieceNum', '__boardPos', '__scoreArmPos', 
+        '__moveCount')
         
     def __init__(self, playerID, pieceNum):
         """
@@ -36,3 +37,6 @@ class Piece():
         
         self.__playerID = playerID
         self.__pieceNum = pieceNum
+        self.__moveCount = 0
+        self.__boardPos = 0
+        self.__scoreArmPos = 0
