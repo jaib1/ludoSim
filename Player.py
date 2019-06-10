@@ -1,6 +1,7 @@
 from ludoSim import Piece
 import numpy as np
 import random
+import collections
 #import pdb; pdb.set_trace()
 
 class Player():
@@ -107,47 +108,88 @@ class Player():
     def moveHeuristic(self, roll):
         """
         Uses heuristics to pick which piece to move, based on trying to hit
-        another player's piece, and not moving within a die roll of another 
-        player's piece
+        another player's piece, not moving within a die roll of another 
+        player's piece, moving up in the score arm, and not moving past a block
+        
+        Parameters
+        ----------
+        roll: a simulated die roll
+        
+        Examples
+        --------
+        roll = np.random.randint(1,7)
+        p.moveHeuristic(roll)
+        
+        p.moveHeuristic(6)   
         """
         
-        # check to see if we can hit another piece:
-        
-        # get positions of all other pieces using comprehension
+        # get positions of all other pieces
         othersPosns = [self.__piecePositions[pr][1] for pr
                     in range(0, len(self.__piecePositions)) 
                     if self.__piecePositions[pr][0] != self.__id
-                    & self.__piecePositions[pr][1] != 0]
+                    & self.__piecePositions[pr][1] != -1000]
         
         # out of all possible moves, get `pieceToMove`:
         
         pieceToMove = []
+        
         # get our pieces, and our potential positions
         ourPieceNums, ourRollPosns = map(list, zip(
-                              *[[self.__activePieces[i]._Piece__pieceNum, 
-                              self.__activePieces[i]._Piece__boardPos + roll] 
-                              for i in range(0, len(self.__activePieces))]))
-        canHit = [i for i in ourRollPosns if i in othersPosns]
+                              *[[self.__activePieces[piece]._Piece__pieceNum, 
+                              self.__activePieces[piece]._Piece__boardPos + roll] 
+                              for piece in range(0, len(self.__activePieces))]))
+        
+        # check to see if we can hit another piece
+        canHit = [pos for pos in ourRollPosns if pos in othersPosns]
+        
+        # check to see if we can move in score arm
+        canMoveInScoreArm = [piece for piece in range(0, len(ourPieceNums)) 
+                            if (self.__pieces[piece]._Piece.__moveCount > self.__boardSpaces) # if we are in score arm
+                            and 
+                            ((self.__pieces[piece].__Piece__scoreArmPos + roll) 
+                            < self.__scoreArmSpaces)] # and our move wouldn't be past score arm
+        
+        # check to see if there are any blocks:
+        blockPosns = [piece for piece, count 
+                     in collections.Counter(othersPosns).items() if count > 1]
+                    
+        # if, elif, else block for 1) hitting another piece, 2) moving up in
+        # score arm, 3) not moving past a block
         if canHit:
             pieceToMove = ourPieceNums[ourRollPosns.index(canHit[0])]
-        else: # see if there is a block, or if we would go past score arm
-            pieceToMove = random.choice(ourPieceNums)
-        
+        elif canMoveInScoreArm: # if we have a piece in score arm, move it, else check for blocks
+            pieceToMove = canMoveInScoreArm[0]
+        elif blockPosns:    
+            piecesToMove = [piece for piece 
+                           in range(0, len(self.__activePieces)) 
+                           for block in blockPosns
+                           if (ourRollPosns[piece] < blockPosns(block))]
+            
+            if piecesToMove:                  
+                pieceToMove = random.choice(piecesToMove)
+                
+        else: # make sure the available pieces are not stuck in score arm
+            piecesToMove = [pieceNum for pieceNum in ourPieceNums
+                           if ourPieceNums[pieceNum] not in canMoveInScoreArm]
+            
+            if piecesToMove:                  
+                pieceToMove = random.choice(piecesToMove)
+
         # if no possible moves, return
         if not(pieceToMove):
             return
         
         # the move: update piece `__moveCount`, `__boardPos`, `__scoreArmPos`
-        self.__pieces[pieceToMove].__moveCount += roll
-        self.__pieces[pieceToMove].__boardPos = ( 
-            (self.__startPos + self.__pieces[pieceToMove].__moveCount) 
+        self.__pieces[pieceToMove]._Piece__moveCount += roll
+        self.__pieces[pieceToMove]._Piece__boardPos = ( 
+            (self.__startPos + self.__pieces[pieceToMove]._Piece__moveCount) 
             % self.__boardSpaces) 
         # if we are in the score arm...
-        if self.__pieces[pieceToMove].__moveCount > self.__boardSpaces:
+        if self.__pieces[pieceToMove]._Piece__moveCount > self.__boardSpaces:
             # update `__scoreArmPos`
-            self.__pieces[pieceToMove].__scoreArmPos = (
-                self.__pieces[pieceToMove].__moveCount - self.__boardSpaces)
+            self.__pieces[pieceToMove]._Piece__scoreArmPos = (
+                self.__pieces[pieceToMove]._Piece__moveCount - self.__boardSpaces)
             # remove piece from board
-            self.__pieces[pieceToMove].__boardPos = 0
+            self.__pieces[pieceToMove]._Piece__boardPos = -1000
             
         

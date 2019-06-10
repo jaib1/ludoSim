@@ -1,5 +1,3 @@
-import numpy as np
-
 class Piece(): 
     """
     A class which represents a player's piece in a ludo game. Instantiated and used by `Board`.
@@ -38,5 +36,5 @@ class Piece():
         self.__playerID = playerID
         self.__pieceNum = pieceNum
         self.__moveCount = 0
-        self.__boardPos = 0
+        self.__boardPos = -1000 # hacky placeholder for representing "off board"
         self.__scoreArmPos = 0

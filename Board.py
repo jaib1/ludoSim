@@ -78,7 +78,7 @@ class Board():
         """
         
         # list of lists of piece positions, with [playerID, piecePosition]
-        self.__piecePositions = [[player, 0] for player in range(0,numPlayers) 
+        self.__piecePositions = [[player, -1000] for player in range(0,numPlayers) 
                                 for piece in range(0,numPieces)]
         self.__scores = np.zeros([numPlayers,1], dtype=int) 
         self.__numPlayers = numPlayers 
@@ -86,11 +86,11 @@ class Board():
         self.__scoreArmSpaces = scoreArmSpaces 
         self.__widthSpaces = widthSpaces
         self.__boardSpaces = (scoreArmSpaces+1)*8 + (widthSpaces-2)*4
-        # build `__startPositions` array with comprehension
+        # build `__startPositions` array
         self.__startPositions = [(i * (2*(scoreArmSpaces+1)+1) -
                                 (2*(scoreArmSpaces+1))) for i in 
                                 range(0,numPlayers)]
-        # build `__players` array with comprehension
+        # build `__players` array
         self.__players = [Player(i, numPieces, self.__startPositions[i], 
                          self.__boardSpaces, self.__piecePositions) 
                          for i in range(0,numPlayers)] 
@@ -104,12 +104,12 @@ class Board():
         turnNumber = 0
         
         while not(self.__winner):
-            # roll dice
+            # roll die
             roll = np.random.randint(1,7)
         
             # player makes move
             playerTurn = turnNumber % self.__numPlayers
-            self.__players[playerTurn].__makeMove(roll)
+            self.__players[playerTurn].makeMove(roll)
             if not(roll == 6):
                 turnNumber +=1 
             
@@ -137,7 +137,7 @@ class Board():
         base.
         """
         
-        if np.any(self.scores == self.numPieces): 
+        if np.any(self.__scores == self.__numPieces): 
             self.endGame()
     
     def endGame(self):
