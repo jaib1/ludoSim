@@ -1,5 +1,4 @@
 from ludoSim import * # import other classes in this analysis
-from ludoSim.Piece import Piece
 import numpy as np
 import random
 import collections
@@ -154,8 +153,8 @@ class Player():
         blockPosns = [piece for piece, count 
                      in collections.Counter(othersPosns).items() if count > 1]
                     
-        # if, elif, else block for 1) hitting another piece, 2) moving up in
-        # score arm, 3) not moving past a block
+        # if, elif, elif, else block for 1) hitting another piece, 2) moving up
+        # in score arm, 3) not moving past a block, 4) random move
         if canHit:
             pieceToMove = ourPieceNums[ourRollPosns.index(canHit[0])]
         elif canMoveInScoreArm: # if we have a piece in score arm, move it, else check for blocks
