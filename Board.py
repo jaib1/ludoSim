@@ -1,5 +1,6 @@
+from ludoSim import * # import other classes in this package
 import numpy as np
-from ludoSim import Player # import other classes in this package
+
 
 class Board(): 
     """
@@ -80,7 +81,7 @@ class Board():
         # list of lists of piece positions, with [playerID, piecePosition]
         self.__piecePositions = [[player, -1000] for player in range(0,numPlayers) 
                                 for piece in range(0,numPieces)]
-        self.__scores = np.zeros([numPlayers,1], dtype=int) 
+        self.__scores = [0 for i in range(0,numPlayers)] 
         self.__numPlayers = numPlayers 
         self.__numPieces = numPieces 
         self.__scoreArmSpaces = scoreArmSpaces 

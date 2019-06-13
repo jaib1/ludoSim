@@ -1,8 +1,8 @@
-from ludoSim import Piece
+from ludoSim import * # import other classes in this analysis
+from ludoSim.Piece import Piece
 import numpy as np
 import random
 import collections
-#import pdb; pdb.set_trace()
 
 class Player():
     """
@@ -54,7 +54,7 @@ class Player():
         self.__startPos = startPos
         # build `pieces` array with comprehension
         self.__pieces = [Piece(id, i) for i in range(0,numPieces)]
-        self.__homePieces = self.__pieces
+        self.__homePieces = [Piece(id, i) for i in range(0,numPieces)]
         self.__activePieces = [] 
         self.__scorePieces = []
         self.__score = 0
@@ -107,9 +107,10 @@ class Player():
     
     def moveHeuristic(self, roll):
         """
-        Uses heuristics to pick which piece to move, based on trying to hit
-        another player's piece, not moving within a die roll of another 
-        player's piece, moving up in the score arm, and not moving past a block
+        Uses heuristics to pick which piece to move, based on 1) trying to hit
+        another player's piece, 2) not moving within a die roll of another 
+        player's piece, 3) moving up in the score arm, and 4) not moving past a 
+        block
         
         Parameters
         ----------

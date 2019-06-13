@@ -80,3 +80,11 @@ Gameplay:
 1) all available pieces in home [x]
 2) there is a block
 3) would go past score arm
+
+things to test:
+
+1) roll of 6
+2) scoring
+3) hitting another piece
+4) can't move past score arm
+5) can't make a move

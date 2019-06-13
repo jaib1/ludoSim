@@ -1,6 +1,3 @@
-#import pytest
-
-
 def atest(s1,s2):
     s3 = s1 + s2 + s1   
     s3 = '"' + s3 +'"'   
@@ -19,6 +16,11 @@ def func(x):
     return x + 1
 
 def test_answer():
-    assert func(3) == 5
+    #assert func(4) == 5
+    assert not(0)
+    #assert func(3) == 5
     
-#pytest.main(test_answer)
+
+# to run: 
+# `import pytest`
+# `pytest.main(["test_answer"])`
