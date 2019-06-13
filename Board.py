@@ -34,8 +34,8 @@ class Board():
     Attributes:
     -----------
         __players: Array of Player objects
-      	__piecePositions: NumPlayers * NumPieces array with int value of each 
-          position
+      	__piecePositions: list of lists [PlayerID, PiecePos] array of 
+          NumPlayers * NumPieces length
         __startPositions: an array with the start position for each player
       	__scores: NumPlayers array with the current score for each player
       	__boardSpaces: The total number of spaces on the board
