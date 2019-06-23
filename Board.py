@@ -16,7 +16,7 @@ class Board():
             - "start position": The board space a player's piece occupies
             upon moving out of their home base. 
         - Board Space Numbering: The start position of player1 is considered 
-          space 1. 
+          space 0. 
     
     Rules:
     ------
@@ -34,14 +34,12 @@ class Board():
     Attributes:
     -----------
         __players: Array of Player objects
-      	__piecePositions: list of lists [PlayerID, PiecePos] array of 
+      	__piecePosns: dict of piece positions [PlayerIDPieceId:PiecePos] of 
           NumPlayers * NumPieces length
-        __startPositions: an array with the start position for each player
+        __startPosns: an array with the start position for each player
       	__scores: NumPlayers array with the current score for each player
       	__boardSpaces: The total number of spaces on the board
-        __spacesArray: an array containing the range of board spaces
-          concatenated with itself (used for easier updating of piece positions)
-        __spacesBeforeScoreArm: The number of spaces a player's piece needs to
+        __scoreArmSpaces: The number of spaces a player's piece needs to
           move before entering the score arm.
       	__winner: The winner of the game
     """
@@ -49,7 +47,7 @@ class Board():
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
-    __slots__ = ('__players', '__piecePositions', '__startPositions', 
+    __slots__ = ('__players', '__piecePosns', '__startPosns', 
         '__scores', '__boardSpaces', '__spacesArray', '__winner', 
         '__numPlayers', '__numPieces', '__scoreArmSpaces', '__widthSpaces')
     
@@ -78,9 +76,10 @@ class Board():
         b = Board(4,5,8,4)      
         """
         
-        # list of lists of piece positions, with [playerID, piecePosition]
-        self.__piecePositions = [[player, -1000] for player in range(0,numPlayers) 
-                                for piece in range(0,numPieces)]
+        # dict of piece positions: {"playerID""pieceNum": boardPos}
+        self.__piecePosns = {str(player)+str(piece):-1000 
+                                for player in range(0,numPlayers) 
+                                for piece in range(0,numPieces)}
         self.__scores = [0 for i in range(0,numPlayers)] 
         self.__numPlayers = numPlayers 
         self.__numPieces = numPieces 
@@ -88,13 +87,11 @@ class Board():
         self.__widthSpaces = widthSpaces
         self.__boardSpaces = (scoreArmSpaces+1)*8 + (widthSpaces-2)*4
         # build `__startPositions` array
-        self.__startPositions = [(i * (2*(scoreArmSpaces+1)+1) -
-                                (2*(scoreArmSpaces+1))) for i in 
-                                range(0,numPlayers)]
+        self.__startPosns = [(i * (2*(scoreArmSpaces+1)+1)) 
+                                for i in range(0,numPlayers)]
         # build `__players` array
-        self.__players = [Player(i, numPieces, self.__startPositions[i], 
-                         self.__boardSpaces, self.__piecePositions) 
-                         for i in range(0,numPlayers)] 
+        self.__players = [Player(self, i, self.__startPositions[i]) 
+                         for i in range(0,numPlayers)]
         self.__winner = []
         
         
@@ -114,23 +111,7 @@ class Board():
             if not(roll == 6):
                 turnNumber +=1 
             
-            self.updateBoard()
-             
-               
-    def updateBoard(self):
-        """
-        Updates the game board (`piecePositions`) after each move.
-        """
-        
-        # if any to-be-updated self.piecePositions == current piecePosition, hit
-        
-        # update self.__piecePositions
-            # if any moveCount >= boardSpaces-2, move to score arm
-        
-        # if any Piece.HomePos == scoreArmSpaces:
-        #   Piece.HomePos +=1 
-        #   self.updateScore()
-        
+            self.updateScore()
     
     def updateScore(self):
         """
@@ -146,6 +127,9 @@ class Board():
         Ends the game and declares a `winner` when a player has moved all of 
         their pieces to the home base.
         """
+        self.__winner = [player for self.__scores[player] 
+        if self.__scores[player] == self.__numPieces]
+        
         print('endGame')
         
         

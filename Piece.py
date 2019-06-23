@@ -35,6 +35,6 @@ class Piece():
         
         self.__playerID = playerID
         self.__pieceNum = pieceNum
-        self.__moveCount = 0
-        self.__boardPos = -1000 # hacky placeholder for representing "off board"
-        self.__scoreArmPos = 0
+        self.__boardPos = -1000 # hacky placeholders for representing "off board"
+        self.__moveCount = -1000 
+        self.__scoreArmPos = -1000
