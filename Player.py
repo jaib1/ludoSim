@@ -1,11 +1,13 @@
 from ludoSim import * # import other classes in this analysis
+from ludoSim.Piece import Piece
 import numpy as np
 import random
 import collections
 
 class Player():
     """
-    A class which represents a player in a ludo game. Instantiated and used by `Board`.
+    A class which represents a player in a ludo game. Instantiated and used by 
+    `Board`.
     
     Attributes:
         __board: The Board object which is the Player's parent
@@ -20,14 +22,13 @@ class Player():
       	__activePieces: The player's pieces currently on the ludo board
       	__scorePieces: The player's pieces currently in their score base
       	__score: The player's current score
-        __pieceToMove: The player's upcoming piece to move
     """
     
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
     __slots__ = ('__board', '__id', '__startPos', '__scoreBasePos', '__pieces', 
-        '__homePieces', '__activePieces', '__scorePieces', '__score', '__pieceToMove')
+        '__homePieces', '__activePieces', '__scorePieces', '__score')
         
     def __init__(self, board, id, startPos):
         """
@@ -163,8 +164,7 @@ class Player():
         # check to see if we can move in score arm
         canMoveInScoreArm = [activePieceNums[piece] for piece in range(0, len(activePieceNums)) 
                             if rollMoveCounts[piece] >= boardSpaces # if we are in score arm
-                            and 
-                            rollScoreArmPosns <= scoreArmSpaces] # and our move wouldn't be past score arm
+                            and rollScoreArmPosns <= scoreArmSpaces] # and our move wouldn't be past score arm
         
         # check to see if there are any blocks:
         blockPosns = [pos for pos, count 
@@ -196,10 +196,9 @@ class Player():
         if not(pieceToMove):
             return
         
-        self.__pieceToMove = pieceToMove
-        self.updateGame()
+        self.updateGame(roll, pieceToMove)
             
-    def updateGame(self):
+    def updateGame(self, roll, pieceToMove):
         # the move: update player '__score' and '__scorePieces'; 
         # piece `__moveCount`, `__boardPos`, `__scoreArmPos`;
         # and board `__piecePositions` and `__score`

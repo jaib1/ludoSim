@@ -1,4 +1,5 @@
 from ludoSim import * # import other classes in this package
+from ludoSim.Player import Player
 import numpy as np
 
 
@@ -24,9 +25,9 @@ class Board():
             1) A player may move a piece out of their home base
             and onto the board 
             2) The player rolls again
-        - If a player's (e.g. player1) piece moves to the same board space 
-        another player's (e.g. player2) piece occupies, the other player's 
-        (player2) piece moves back to their home base
+        - If a player's (e.g. player0) piece moves to the same board space 
+        another player's (e.g. player1) piece occupies, the other player's 
+        (player1) piece moves back to their home base
         - If a player's piece moves to a board space which another piece of
         the same player occupies, that space is now "blocked", and other
         players cannot move their pieces past that space
@@ -90,11 +91,10 @@ class Board():
         self.__startPosns = [(i * (2*(scoreArmSpaces+1)+1)) 
                                 for i in range(0,numPlayers)]
         # build `__players` array
-        self.__players = [Player(self, i, self.__startPositions[i]) 
+        self.__players = [Player(self, i, self.__startPosns[i]) 
                          for i in range(0,numPlayers)]
         self.__winner = []
-        
-        
+         
     def playGame(self):
         """
         Starts and runs the game of ludo.
@@ -127,9 +127,9 @@ class Board():
         Ends the game and declares a `winner` when a player has moved all of 
         their pieces to the home base.
         """
-        self.__winner = [player for self.__scores[player] 
-        if self.__scores[player] == self.__numPieces]
+        self.__winner = [player for player in range(0, len(self.__players))
+                        if self.__scores[player] == self.__numPieces]
         
-        print('endGame')
+        print('Game over. Player %s wins' % self.__winner)
         
         

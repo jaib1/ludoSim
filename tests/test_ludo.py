@@ -41,7 +41,8 @@ def test_roll():
     """ 
     Tests outcomes of a die roll given certain game states
     """
-    
+    b = Board()
+    p =
     player = Player(1,4,1,52, [-1000, -1000, -1000, -1000])
     # first test: move piece out of home base
     roll = 6
