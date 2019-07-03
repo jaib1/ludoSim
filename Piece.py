@@ -38,3 +38,8 @@ class Piece():
         self.__boardPos = -1000 # hacky placeholders for representing "off board"
         self.__moveCount = -1000 
         self.__scoreArmPos = -1000
+        
+    def __iter__(self):
+        """
+        Generator Function to use class as iterator.
+        """
