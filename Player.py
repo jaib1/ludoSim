@@ -98,6 +98,11 @@ class Player():
         self.__activePieces[-1]._Piece__boardPos = self.__startPos
         # update that piece's move count
         self.__activePieces[-1]._Piece__moveCount = 1
+        
+        # update board `__piecePosns`
+        pieceID = self.__activePieces[-1]._Piece__pieceID
+        self.__board._Board__piecePosns[str(self.__id)+str(pieceID)] = (
+            self.__startPos)
     
     def moveHeuristic(self, roll):
         """
@@ -117,37 +122,30 @@ class Player():
         
         p.moveHeuristic(6)   
         """        
-        
-        import pdb
-        pdb.set_trace()
-        
         # get necessary info from board
         allPiecePosns = self.__board._Board__piecePosns
         boardSpaces = self.__board._Board__boardSpaces
         scoreArmSpaces = self.__board._Board__scoreArmSpaces
         
         # get positions of all other pieces
-#        othersPosnsKeys = [key for key in allPiecePosns.keys() 
-#                          if not(key[0]==str(self.__id))]
-#        othersPosns = [allPiecePosns[key] for key in othersPosnsKeys]
         othersPosns = [allPiecePosns[key] for key in allPiecePosns.keys()
                       if key[0] != str(self.__id)]
         
-        # out of all possible pieces to move, get `pieceToMove` (`__pieceNum`
+        # out of all possible pieces to move, get `pieceToMove` (`__pieceID`
         # for the piece we want to move):
         
         pieceToMove = []
         
 # cmntd out: using `map` and `zip(*)` to unzip two lists       
         # get our potential positions
-#        activePieceNums, rollPosns = (
+#        activePieceIDs, rollPosns = (
 #            map(list, zip(
-#                *[[self.__activePieces[piece]._Piece__pieceNum, 
+#                *[[self.__activePieces[piece]._Piece__pieceID, 
 #                self.__activePieces[piece]._Piece__boardPos + roll] 
 #                for piece in range(0, len(self.__activePieces))])))
         
-        # get our active piece numbers
-        activePieceNums = [self.__activePieces[piece]._Piece__pieceNum 
+        # get our active piece IDs
+        activePieceIDs = [self.__activePieces[piece]._Piece__pieceID 
                           for piece in range(0, len(self.__activePieces))]
         # get our potential positions
         rollPosns = [self.__activePieces[piece]._Piece__boardPos + roll
@@ -163,9 +161,8 @@ class Player():
         canHitPos = [pos for pos in rollPosns if pos in othersPosns]
         
         # check to see if we can move in score arm
-        pdb.set_trace()
         canMoveInScoreArm = [
-            activePieceNums[piece] for piece in range(0, len(activePieceNums)) 
+            activePieceIDs[piece] for piece in range(0, len(activePieceIDs)) 
             if rollMoveCounts[piece] >= boardSpaces # if we are in score arm
             and rollScoreArmPosns[piece] <= (scoreArmSpaces+1)] # and our move wouldn't be past score arm
         
@@ -177,7 +174,7 @@ class Player():
         # if, elif, elif, else block for 1) hitting another piece, 2) moving up
         # in score arm, 3) not moving past a block, 4) random move
         if canHitPos:
-            pieceToMove = activePieceNums[rollPosns.index(canHitPos[0])]
+            pieceToMove = activePieceIDs[rollPosns.index(canHitPos[0])]
         elif canMoveInScoreArm: # if we have a piece in score arm, move it, else check for blocks
             pieceToMove = canMoveInScoreArm[0]
         elif blockPosns:    
@@ -190,9 +187,12 @@ class Player():
                 pieceToMove = random.choice(piecesToMove)
                 
         else: # make sure the available pieces are not stuck in score arm
-            piecesToMove = [
-                pieceNum for pieceNum in activePieceNums
-                if activePieceNums[pieceNum] not in canMoveInScoreArm]
+            if canMoveInScoreArm != []:
+                piecesToMove = [
+                    pieceID for pieceID in activePieceIDs
+                    if activePieceIDs[pieceID] not in canMoveInScoreArm]
+            else:
+                piecesToMove = activePieceIDs
             
             if piecesToMove:
                 if roll == 6:
@@ -200,55 +200,87 @@ class Player():
                     if toLeaveHome:
                         self.leaveHome()
                         return
-                    else:
-                        pieceToMove = random.choice(piecesToMove)
+                    
+                else:
+                    pieceToMove = random.choice(piecesToMove)
 
         # if no possible moves
-        if not(pieceToMove):
+        if pieceToMove == []:
             if roll == 6 and self.__homePieces:
                 self.leaveHome()
                 return
             else:
                 return
         
-        self.updateGame(roll, pieceToMove, activePieceNums)
+        self.updateGame(roll, pieceToMove, activePieceIDs, canHitPos)
             
-    def updateGame(self, roll, pieceToMove, activePieceNums):
-        # the move: update piece `__boardPos`, `__moveCount`, `__scoreArmPos`;
-        # update player '__score' and '__scorePieces'; 
-        # and update board `__score` and `__piecePosns`
-        import pdb
-        pdb.set_trace()
+    def updateGame(self, roll, pieceToMove, activePieceIDs, canHitPos):
+        # the move: 1) update piece `__boardPos`, `__moveCount`, `__scoreArmPos`;
+        # 2) update player '__score' and '__scorePieces'; 
+        # 3) update board `__score` and `__piecePosns`        
 
-        
-        activePieceIndx = activePieceNums.index(pieceToMove)
+        activePieceIndx = activePieceIDs.index(pieceToMove)
         boardPos = self.__activePieces[activePieceIndx]._Piece__boardPos
         moveCount = self.__activePieces[activePieceIndx]._Piece__moveCount
         scoreArmSpaces = self.__board._Board__scoreArmSpaces
         boardSpaces = self.__board._Board__boardSpaces
 
+        # get update piece `__boardPos` and `__moveCount`
         boardPos += roll
         self.__activePieces[activePieceIndx]._Piece__boardPos = boardPos        
         moveCount += roll
         self.__activePieces[activePieceIndx]._Piece__moveCount = moveCount
         
-        # if we are in the score arm...
-        if moveCount > boardSpaces:
-            # update `__scoreArmPos`
-            scoreArmPos = moveCount - boardSpaces
-            self.__activePieces[activePieceIndx]._Piece__scoreArmPos = scoreArmPos
-            # remove piece from board
-            self.__activePieces[activePieceIndx]._Piece__boardPos = -1000
+        # special case for if one player can hit another's piece
+        if canHitPos:
+            # get opponent's piece which is hit:
             
-            # see if piece scored
-            if moveCount > (boardSpaces + scoreArmSpaces):
-                # update score
-                self.__score += 1
-                self.__board._Board__scores[self.__id] = self.__score
-                # add piece to `__scorePieces` and remove from `__activePieces`
-                self.__scorePieces.append(self.__activePieces.pop(activePieceIndx))
-                return # so we don't update `self.__board` as below
-        
-        # update update board `__piecePosns`
-        self.__board._Board__piecePosns[str(self.__id)+str(pieceToMove)] = (
-            self.__activePieces[activePieceIndx]._Piece__boardPos)
+            allPiecePosns = self.__board._Board__piecePosns
+            # get string val of hit playerID and pieceID 
+            oppoPlayerID, oppoPieceID = (
+                list(allPiecePosns.keys())[list(allPiecePosns.values()).index(boardPos)])
+            import pdb
+            pdb.set_trace()
+            # get hit Player object
+            oppoPlayer = (
+                [self.__board._Board__players[player] for player 
+                 in range(0, self.__board._Board__numPlayers) 
+                 if self.__board._Board__players[player]._Player__id 
+                 == int(oppoPlayerID)])[0]
+            # get hit Piece object and index of piece in opponent's
+            # `__activePieces` together as tuple
+            oppoActivePieceNIndx = (
+                [(oppoPlayer._Player__activePieces[piece], piece) for piece 
+                in range(0, len(oppoPlayer._Player__activePieces)) 
+                if oppoPlayer._Player__activePieces[piece]._Piece__pieceID
+                == int(oppoPieceID)])
+            
+            # update that piece's and board's piece pos
+            oppoActivePieceNIndx[0][0]._Piece__boardPos = -1000
+            oppoActivePieceNIndx[0][0]._Piece__moveCount = -1000
+            oppoActivePieceNIndx[0][0]._Piece__scoreArmPos = -1000
+            self.__board._Board__piecePosns[oppoPlayerID+oppoPieceID] = -1000
+            # move hit piece back to opponent's home base
+            oppoPlayer._Player__homePieces.append(oppoPlayer._Player__activePieces.pop(oppoActivePieceNIndx[0][1]))
+            
+        else:            
+            # if we are in the score arm...
+            if moveCount > boardSpaces:
+                # update `__scoreArmPos`
+                scoreArmPos = moveCount - boardSpaces
+                self.__activePieces[activePieceIndx]._Piece__scoreArmPos = scoreArmPos
+                # remove piece from board
+                self.__activePieces[activePieceIndx]._Piece__boardPos = -1000
+                
+                # see if piece scored
+                if moveCount > (boardSpaces + scoreArmSpaces):
+                    # update score
+                    self.__score += 1
+                    self.__board._Board__scores[self.__id] = self.__score
+                    # add piece to `__scorePieces` and remove from `__activePieces`
+                    self.__scorePieces.append(self.__activePieces.pop(activePieceIndx))
+                    return # so we don't update `self.__board` as below
+            
+            # update board `__piecePosns` as long as there wasn't a score
+            self.__board._Board__piecePosns[str(self.__id)+str(pieceToMove)] = (
+                self.__activePieces[activePieceIndx]._Piece__boardPos)

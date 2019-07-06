@@ -86,5 +86,6 @@ things to test:
 1) roll of 6
 2) scoring
 3) hitting another piece
-4) can't move past score arm
-5) can't make a move
+4) can't make a move (block)
+
+5) integration test starting from `board.playGame`
