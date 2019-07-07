@@ -50,12 +50,9 @@ def test_roll():
     assert not(p._Player__activePieces) 
 
     # should be -1000 (indicates off board)
-    assert p._Player__pieces[-1]._Piece__boardPos == -1000
+    assert p._Player__homePieces[-1]._Piece__boardPos == -1000
     
     p.makeMove(roll) # move piece out of home base 
-    
-    # number of first active piece should be number of last piece
-    assert p._Player__activePieces[0]._Piece__pieceID == p._Player__pieces[-1]._Piece__pieceID
     
     # check for update of board position and move count
     assert p._Player__activePieces[0]._Piece__boardPos == p._Player__startPos
@@ -145,13 +142,21 @@ def test_hit():
     assert (numP1ActivePieces > len(p1._Player__activePieces)
             and numP1HomePieces < len(p1._Player__homePieces))
     assert p1_pz._Piece__boardPos == -1000
+    
+    # test that moving a piece onto the board at a board position an opponent's
+    # piece occupies succesfully hits the opponent's piece:
+    
+    # move the piece that was just hit by p0 back onto the board to hit p0's
+    # piece
     p1.makeMove(6)
+    assert (p0_pz._Piece__boardPos == -1000 
+            and len(p0._Player__homePieces) == 4 and not(p0._Player__activePieces))
+    
     # test that the next piece to be moved out of home is the same piece that 
     # was just sent back home
     assert p1_pz._Piece__boardPos >= 0
     
-    # test that moving a piece onto the board at a board position an opponent's
-    # piece occupies succesfully hits the opponent's piece
+
 
 def test_block():
     """
