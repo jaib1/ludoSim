@@ -40,20 +40,23 @@ class Board():
     
     Attributes:
     -----------
-        __numPlayers: the number of players in the game (must be an int between 1-4)
-        __numPieces: the number of pieces each player has (must be an int >= 1)
-        __players: Array of Player objects
-      	__piecePosns: dict of piece positions [PlayerIDPieceId:PiecePos] of 
-          NumPlayers * NumPieces length
-        __startPosns: a numeric array with the start position for each player
-      	__scores: numeric array of length numPlayers with the current score for 
-            each player
-        __winner: The winner of the game
+        __numPlayers: The number of players in the game (must be an int between 1-4).
+        __numPieces: The number of pieces each player has (must be an int >= 1).
+        __players: Array of Player objects.
+      	__piecePosns: Dict of piece positions [PlayerIDPieceId:PiecePos] of 
+          NumPlayers * NumPieces length.
+        __startPosns: Numeric array with the start position for each player.
+      	__scores: Numeric array of length numPlayers with the current score for 
+            each player.
+        __winner: A number representing the winning player (the playerID).
         __scoreArmSpaces: The number of spaces a player's piece needs to move
             once inside the score arm in order to score.
         __widthSpaces: The number of columns of length scoreArmSpaces on each
-            side of the board
-      	__boardSpaces: The total number of spaces on the board
+            side of the board.
+      	__boardSpaces: The total number of spaces on the board.
+        __hits: Numeric array with length numPlayers which holds the number of
+          times each player hit another player's piece, where the index in the 
+          array corresponds to the player ID.
     """
     
     # define and limit attributes:
@@ -61,7 +64,7 @@ class Board():
     # make them hidden, using `__`
     __slots__ = ('__numPlayers', '__numPieces', '__players', '__piecePosns', 
                  '__startPosns', '__scores', '__winner', '__scoreArmSpaces', 
-                 '__widthSpaces', '__boardSpaces')
+                 '__widthSpaces', '__boardSpaces', '__hits')
     
     def __init__(self, numPlayers=2, numPieces=4, scoreArmSpaces=5, 
                  widthSpaces=3):
@@ -105,7 +108,8 @@ class Board():
         self.__players = [Player(self, i, self.__startPosns[i]) 
                          for i in range(0,numPlayers)]
         self.__winner = []
-         
+        self.__hits = [0, 0]
+        
     def playGame(self):
         """
         Starts and runs the game of ludo.

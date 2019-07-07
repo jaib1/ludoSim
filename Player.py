@@ -9,18 +9,18 @@ class Player():
     `Board`.
     
     Attributes:
-        __board: The Board object which is the Player's parent
+        __board: The Board object which is the Player's parent.
         __id: The home base (of the four possible bases) of the player.
             The home base serves as the player's ID, and designates the
             player's start position and score base position in terms of the
             board space numberings.
         __startPos: The board space number associated with the board space a 
           player's piece starts on upon leaving the home base with a roll of 6.
-      	__pieces: Array of Piece objects
-      	__homePieces: The player's pieces currently in the their home base
-      	__activePieces: The player's pieces currently on the ludo board
-      	__scorePieces: The player's pieces currently in their score base
-      	__score: The player's current score
+      	__pieces: Array of Piece objects.
+      	__homePieces: The player's pieces currently in the their home base.
+      	__activePieces: The player's pieces currently on the ludo board.
+      	__scorePieces: The player's pieces currently in their score base.
+      	__score: The player's current score.
     """
     
     # define and limit attributes:
@@ -204,9 +204,9 @@ class Player():
         else:
             # prune available pieces to those not stuck in score arm           
             piecesToMove = [
-                self._Player__activePieces[piece]._Piece__pieceID 
+                self.__activePieces[piece]._Piece__pieceID 
                 for piece in range(0, len(activePieceIDs))
-                if self._Player__activePieces[piece]._Piece__scoreArmPos <= 0]
+                if self.__activePieces[piece]._Piece__scoreArmPos <= 0]
             
             if piecesToMove:
                 if roll == 6:
@@ -331,3 +331,5 @@ class Player():
         # move hit piece back to opponent's home base
         oppoPlayer._Player__homePieces.append(oppoPlayer._Player__activePieces.pop(oppoActivePieceNIndx[0][1]))
         
+        # record hit count in board
+        self.__board._Board__hits[self.__id] += 1

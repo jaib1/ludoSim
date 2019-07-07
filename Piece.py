@@ -5,11 +5,11 @@ class Piece():
     
     Attributes:
     -----------
-        __playerID: the ID of the player the piece belongs to
-        __pieceID: the number of the piece
-        __moveCount: the current number of spaces the piece has moved
-        __boardPos: the current board space the piece occupies
-        __scoreArmPos: the current score arm space the piece occupies
+        __playerID: The number ID of the player the piece belongs to.
+        __pieceID: The number of the piece.
+        __moveCount: The current number of spaces the piece has moved.
+        __boardPos: The current board space the piece occupies.
+        __scoreArmPos: The current score arm space the piece occupies.
     """
     
     # define and limit attributes:
@@ -25,6 +25,7 @@ class Piece():
         Parameters
         -----------
         playerID
+        pieceID
         
         Examples
         --------
