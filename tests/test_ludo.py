@@ -75,6 +75,10 @@ def test_score():
         p._Player__activePieces[-1]._Piece__boardPos = p._Player__startPos
         # update that piece's move count
         p._Player__activePieces[-1]._Piece__moveCount = 1
+        # update board's `__piecePosns`
+        pID = p._Player__id
+        pPiece = p._Player__activePieces[-1]._Piece__pieceID
+        b._Board__piecePosns[str(pID)+str(pPiece)] = p._Player__startPos
     # `__homePieces` should now be empty
     assert not(p._Player__homePieces)
     # move one piece to score arm
@@ -145,4 +149,51 @@ def test_hit():
     # test that the next piece to be moved out of home is the same piece that 
     # was just sent back home
     assert p1_pz._Piece__boardPos >= 0
+    
+    # test that moving a piece onto the board at a board position an opponent's
+    # piece occupies succesfully hits the opponent's piece
+
+def test_block():
+    """
+    Test what happens when one player has two pieces on the same square and
+    another player's piece has the ability to move past that square
+    """
+    b = Board()
+    p0 = b._Board__players[0]
+    p1 = b._Board__players[1]
+    # move one piece out for p0
+    p0.makeMove(6)
+    # move two pieces for p1 onto board
+    for piece in range(0, 2):
+        p1._Player__activePieces.append(p1._Player__homePieces.pop())
+        # move that piece to the start position
+        p1._Player__activePieces[-1]._Piece__boardPos = p1._Player__startPos
+        # update that piece's move count
+        p1._Player__activePieces[-1]._Piece__moveCount = 1
+        # update board's `__piecePosns`
+        p1ID = p1._Player__id
+        p1Piece = p1._Player__activePieces[-1]._Piece__pieceID
+        b._Board__piecePosns[str(p1ID)+str(p1Piece)] = p1._Player__startPos
+        
+    p0_pz = p0._Player__activePieces[0]
+    p1_pz1 = p1._Player__activePieces[0]
+    p1_pz2 = p1._Player__activePieces[1]
+    # make sure p1's two pieces share the same position
+    assert (b._Board__piecePosns['13'] == b._Board__piecePosns['12'] ==
+            p1_pz1._Piece__boardPos == p1_pz2._Piece__boardPos)
+    
+    distToMove = p1_pz1._Piece__boardPos - p0_pz._Piece__boardPos
+    while distToMove > 5:
+        p0.makeMove(5)
+        distToMove -= 5
+        
+    # make sure moves were properly registered
+    curP0BoardPos = p0_pz._Piece__boardPos
+    assert b._Board__piecePosns['03'] == p0_pz._Piece__boardPos 
+    
+    # test that move for p0 did not occur (could not pass block)
+    p0.makeMove(distToMove)
+    assert p0_pz._Piece__boardPos == curP0BoardPos
+    p0.makeMove(distToMove+1)
+    assert p0_pz._Piece__boardPos == curP0BoardPos
     

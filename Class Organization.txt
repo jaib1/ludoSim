@@ -8,7 +8,6 @@ Board
    	*NumPlayers = 2
   	Players # array of Player objects
   	*NumPieces = 4
-  	Pieces # array of Piece objects
   	PiecePositions # NumPlayers * NumPieces array
   	Scores # NumPlayers array
   	*ScoreArmSpaces = 6
@@ -85,7 +84,10 @@ things to test:
 
 1) roll of 6
 2) scoring
-3) hitting another piece
+3) hitting another piece (+ hitting another piece on move out of home base)
 4) can't make a move (block)
-
 5) integration test starting from `board.playGame`
+
+figure out how to run tests succinctly.
+
+create analysis code.

@@ -1,6 +1,7 @@
 class Piece(): 
     """
-    A class which represents a player's piece in a ludo game. Instantiated and used by `Board`.
+    A class which represents a player's piece in a ludo game. Instantiated and 
+    used by `Player`.
     
     Attributes:
     -----------
@@ -14,8 +15,8 @@ class Piece():
     # define and limit attributes:
     # we won't make them truly private (using `@property`), but will instead
     # make them hidden, using `__`
-    __slots__ = ('__playerID', '__pieceID', '__boardPos', '__scoreArmPos', 
-        '__moveCount')
+    __slots__ = ('__playerID', '__pieceID', '__moveCount', '__boardPos', 
+                 '__scoreArmPos')
         
     def __init__(self, playerID, pieceID):
         """
@@ -35,8 +36,8 @@ class Piece():
         
         self.__playerID = playerID
         self.__pieceID = pieceID
-        self.__boardPos = -1000 # hacky placeholders for representing "off board"
-        self.__moveCount = -1000 
+        self.__moveCount = -1000 # hacky placeholders for representing "off board"
+        self.__boardPos = -1000
         self.__scoreArmPos = -1000
         
     def __iter__(self):
