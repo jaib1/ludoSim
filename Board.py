@@ -1,6 +1,6 @@
 from ludoSim import * # import other classes in this package
 from ludoSim.Player import Player
-import numpy as np
+import random
 
 
 class Board(): 
@@ -37,6 +37,15 @@ class Board():
         - If a player's piece moves to a board space which another piece of
         the same player occupies, that space is now "blocked", and other
         players cannot move their pieces past that space
+    
+    Run game:
+    ---------
+    Navigate to ludoSim's parent directory, launch python, and run the
+    following commands:
+        
+    from ludoSim import *
+    b = Board() # use optional input args to set the Board however you'd like
+    b.playGame()
     
     Attributes:
     -----------
@@ -116,27 +125,23 @@ class Board():
         """
         turnNumber = 0
         
-        while not(self.__winner):
+        while self.__winner == []:
             # roll die
-            roll = np.random.randint(1,7)
+            roll = random.randint(0,6)
         
             # player makes move
             playerTurn = turnNumber % self.__numPlayers
             self.__players[playerTurn].makeMove(roll)
             if not(roll == 6):
                 turnNumber +=1 
-            
-            if np.any(self.__scores == self.__numPieces):
-                self.endGame()
     
     def endGame(self):
         """
         Ends the game and declares a `winner` when a player has scored all of 
-        their pieces.
+        their pieces. This method is called by a Player object when that player
+        scores all of their pieces.
         """
-        self.__winner = [player for player in range(0, len(self.__players))
-                        if self.__scores[player] == self.__numPieces]
-        
+        self.__winner = self.__scores.index(self.__numPieces)  
         print('Game over. Player %s wins' % self.__winner)
         
         

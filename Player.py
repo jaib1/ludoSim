@@ -16,7 +16,6 @@ class Player():
             board space numberings.
         __startPos: The board space number associated with the board space a 
           player's piece starts on upon leaving the home base with a roll of 6.
-      	__pieces: Array of Piece objects.
       	__homePieces: The player's pieces currently in the their home base.
       	__activePieces: The player's pieces currently on the ludo board.
       	__scorePieces: The player's pieces currently in their score base.
@@ -75,7 +74,7 @@ class Player():
         
         Examples
         --------
-        roll = np.random.randint(1,7)
+        roll = random.randint(0,6)
         p.makeMove(roll)
         
         p.makeMove(6)   
@@ -94,7 +93,11 @@ class Player():
         Moves a piece out of home base and onto board.
         """
         # move a piece out from home base and get its piece num
-        self.__activePieces.append(self.__homePieces.pop())
+        try:
+            self.__activePieces.append(self.__homePieces.pop())
+        except:
+            import pdb
+            pdb.set_trace()
         # move that piece to the start position
         self.__activePieces[-1]._Piece__boardPos = self.__startPos
         # update that piece's move count
@@ -131,7 +134,7 @@ class Player():
         
         Examples
         --------
-        roll = np.random.randint(1,7)
+        roll = random.randint(0,6)
         p.moveHeuristic(roll)
         
         p.moveHeuristic(6)   
@@ -178,7 +181,8 @@ class Player():
         
         # check to see if we can hit another piece
         canHitPos = [pos for pos in rollPosns 
-                     if (pos in othersPosns and not(pos in blockPosns))]
+                     if (pos in othersPosns and not(pos in blockPosns) 
+                     and pos > 0)]
         
         # check to see if we can move in score arm
         canMoveInScoreArm = [
@@ -209,7 +213,8 @@ class Player():
                 if self.__activePieces[piece]._Piece__scoreArmPos <= 0]
             
             if piecesToMove:
-                if roll == 6:
+                # if we can possibly move a piece out of home base
+                if roll == 6 and self.__homePieces:
                     toLeaveHome = random.randint(0,1)
                     if toLeaveHome:
                         self.leaveHome()
@@ -279,11 +284,15 @@ class Player():
                 
                 # see if piece scored
                 if moveCount > (boardSpaces + scoreArmSpaces):
+                    # add piece to `__scorePieces` and remove from `__activePieces`
+                    self.__scorePieces.append(self.__activePieces.pop(activePieceIndx))
                     # update score
                     self.__score += 1
                     self.__board._Board__scores[self.__id] = self.__score
-                    # add piece to `__scorePieces` and remove from `__activePieces`
-                    self.__scorePieces.append(self.__activePieces.pop(activePieceIndx))
+                    # check to see if this score was the game-winning score
+                    if self.__score == self.__board._Board__numPieces:
+                        self.__board.endGame()
+                        
                     return # so we don't update board `__piecePosns` as below
         
         # update board `__piecePosns`

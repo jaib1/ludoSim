@@ -1,4 +1,5 @@
-#from ludoSim import *
+from ludoSim import *
+import timeit
 
 def test_roll():
     """ 
@@ -164,4 +165,27 @@ def test_block():
     assert p0_pz._Piece__boardPos == curP0BoardPos
     p0.makeMove(distToMove+1)
     assert p0_pz._Piece__boardPos == curP0BoardPos
+
+def test_playGame():
+    """
+    Test to make sure game runs to completion within a reasonable time, and
+    that the declared winner is accurate
+    """
+    b = Board()
+    # check running time
+    tic = timeit.default_timer()
+    b.playGame()
+    toc = timeit.default_timer()
     
+    # typically ~10000 function calls per game, which in total should take 
+    # < 0.01 seconds, so we set `maxTime` threshold to 0.1 to be safe
+    maxTime = 0.1
+    assert (toc-tic) < maxTime 
+    # make sure winner is player who's score == 4
+    assert (b._Board__winner == b._Board__scores.index(4))
+    
+    # make sure winning player has only scorePieces (no activePieces or homePieces)
+    winningPlayer = b._Board__players[(b._Board__winner)]
+    assert (winningPlayer._Player__scorePieces 
+            and not(winningPlayer._Player__homePieces)
+            and not(winningPlayer._Player__activePieces))
