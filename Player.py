@@ -93,11 +93,7 @@ class Player():
         Moves a piece out of home base and onto board.
         """
         # move a piece out from home base and get its piece num
-        try:
-            self.__activePieces.append(self.__homePieces.pop())
-        except:
-            import pdb
-            pdb.set_trace()
+        self.__activePieces.append(self.__homePieces.pop())
         # move that piece to the start position
         self.__activePieces[-1]._Piece__boardPos = self.__startPos
         # update that piece's move count
