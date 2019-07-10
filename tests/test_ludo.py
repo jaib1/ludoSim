@@ -106,6 +106,7 @@ def test_hit():
     assert (numP1ActivePieces > len(p1._Player__activePieces)
             and numP1HomePieces < len(p1._Player__homePieces))
     assert p1_pz._Piece__boardPos == -1000
+    assert p1_pz == p1._Player__homePieces[-1]
     
     # test that moving a piece onto the board at a board position an opponent's
     # piece occupies succesfully hits the opponent's piece:
