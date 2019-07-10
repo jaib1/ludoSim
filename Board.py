@@ -127,7 +127,7 @@ class Board():
         
         while self.__winner == []:
             # roll die
-            roll = random.randint(0,6)
+            roll = random.randint(1,6)
         
             # player makes move
             playerTurn = turnNumber % self.__numPlayers
@@ -139,7 +139,7 @@ class Board():
         """
         Ends the game and declares a `winner` when a player has scored all of 
         their pieces. This method is called by a Player object when that player
-        scores all of their pieces.
+        scores all of their pieces (in `Player/updateGame`)
         """
         self.__winner = self.__scores.index(self.__numPieces)  
         print('Game over. Player %s wins' % self.__winner)
