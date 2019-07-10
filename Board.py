@@ -66,6 +66,7 @@ class Board():
         __hits: Numeric array with length numPlayers which holds the number of
           times each player hit another player's piece, where the index in the 
           array corresponds to the player ID.
+        __rolls: Numeric array containing all the die rolls in the game
     """
     
     # define and limit attributes:
@@ -73,7 +74,7 @@ class Board():
     # make them hidden, using `__`
     __slots__ = ('__numPlayers', '__numPieces', '__players', '__piecePosns', 
                  '__startPosns', '__scores', '__winner', '__scoreArmSpaces', 
-                 '__widthSpaces', '__boardSpaces', '__hits')
+                 '__widthSpaces', '__boardSpaces', '__hits', '__rolls')
     
     def __init__(self, numPlayers=2, numPieces=4, scoreArmSpaces=5, 
                  widthSpaces=3):
@@ -118,6 +119,7 @@ class Board():
                          for i in range(0,numPlayers)]
         self.__winner = []
         self.__hits = [0, 0]
+        self.__rolls = []
         
     def playGame(self):
         """
@@ -126,9 +128,10 @@ class Board():
         turnNumber = 0
         
         while self.__winner == []:
-            # roll die
+            # roll die and record roll
             roll = random.randint(1,6)
-        
+            self.__rolls.append(roll)
+
             # player makes move
             playerTurn = turnNumber % self.__numPlayers
             self.__players[playerTurn].makeMove(roll)

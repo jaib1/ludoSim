@@ -152,7 +152,7 @@ class Player():
         pieceToMove = []
         
 # cmntd out: using `map` and `zip(*)` to unzip two lists (pythonic but unnecessary)      
-        # get our potential positions
+#        # get our potential positions
 #        activePieceIDs, rollPosns = (
 #            map(list, zip(
 #                *[[self.__activePieces[piece]._Piece__pieceID, 
