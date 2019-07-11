@@ -66,6 +66,7 @@ class Board():
         __hits: Numeric array with length numPlayers which holds the number of
           times each player hit another player's piece, where the index in the 
           array corresponds to the player ID.
+        __rolls: Numeric array containing all the die rolls in the game
     """
     
     # define and limit attributes:
@@ -73,7 +74,7 @@ class Board():
     # make them hidden, using `__`
     __slots__ = ('__numPlayers', '__numPieces', '__players', '__piecePosns', 
                  '__startPosns', '__scores', '__winner', '__scoreArmSpaces', 
-                 '__widthSpaces', '__boardSpaces', '__hits')
+                 '__widthSpaces', '__boardSpaces', '__hits', '__rolls')
     
     def __init__(self, numPlayers=2, numPieces=4, scoreArmSpaces=5, 
                  widthSpaces=3):
@@ -118,17 +119,19 @@ class Board():
                          for i in range(0,numPlayers)]
         self.__winner = []
         self.__hits = [0, 0]
+        self.__rolls = []
         
     def playGame(self):
         """
         Starts and runs the game of ludo.
         """
         turnNumber = 0
-        
+
         while self.__winner == []:
-            # roll die
-            roll = random.randint(0,6)
-        
+            # roll die and record roll
+            roll = random.randint(1,6)
+            self.__rolls.append(roll)
+
             # player makes move
             playerTurn = turnNumber % self.__numPlayers
             self.__players[playerTurn].makeMove(roll)
@@ -139,7 +142,7 @@ class Board():
         """
         Ends the game and declares a `winner` when a player has scored all of 
         their pieces. This method is called by a Player object when that player
-        scores all of their pieces.
+        scores all of their pieces (in `Player/updateGame`)
         """
         self.__winner = self.__scores.index(self.__numPieces)  
         print('Game over. Player %s wins' % self.__winner)

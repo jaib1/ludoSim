@@ -90,4 +90,12 @@ things to test:
 
 figure out how to run tests succinctly.
 
-create analysis code.
+create analysis code:
+
+for each game: winner, score, hits
+totals: winners, scores, hits
+how often does more hits = win?
+how often does more 6's = win?
+
+3 player game?
+4 player game?
