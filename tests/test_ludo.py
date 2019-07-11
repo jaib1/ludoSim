@@ -1,3 +1,6 @@
+# This file contains unit and integration test functions for the ludoSim
+# package
+
 from ludoSim import *
 import timeit
 

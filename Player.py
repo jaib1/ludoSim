@@ -270,7 +270,6 @@ class Player():
                     # update score
                     self.__score += 1
                     self.__board._Board__scores[self.__id] = self.__score
-                    print(self.__board._Board__scores[0], '-', self.__board._Board__scores[1])
                     # check to see if this score was the game-winning score
                     if self.__score == self.__board._Board__numPieces:
                         self.__board.endGame()
