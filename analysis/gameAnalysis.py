@@ -29,7 +29,10 @@ for game in range(0,numGames):
 
     # get scores
     scores[0][game] = b._Board__scores[0]
+    scores[1][game] = b._Board__scores[1]
+    
     hits[0][game] = b._Board__hits[0]
+    hits[1][game] = b._Board__hits[1]
 
     # get number of rolled sixes
     p0Turns = [i for i,x in enumerate(b._Board__playerTurns) if x==0]
@@ -68,3 +71,48 @@ print('Winning ratio of player 1: %f' % (player1WinRatio))
 # globals()['player1Wins'] = shelf['player1Wins']
 # globals()['player1WinRatio'] = shelf['player1WinRatio']
 # shelf.close()
+
+# to plot data:
+
+# set figure and axis:
+fig, ax = plt.subplots()
+ax.set_title('Game Results')
+ax.set_ylabel('Relative Counts')
+xlabels = ('Wins', 'Scores', 'Hits', 'Rolls of 6')
+x = np.arange(len(xlabels)) # arrange the labels evenly on x-axis
+barWidth = 0.25 # width of bars in graph
+ax.set_xticks(x)
+ax.set_xticklabels(xlabels)
+
+# get data:
+player1ScoresRatio = np.sum(scores[1]) / np.sum(scores)
+player1HitsRatio = np.sum(hits[1]) / np.sum(hits)
+player1SixesRatio = np.sum(sixes[1]) / np.sum(sixes)
+player1Stats = [player1WinRatio, player1ScoresRatio, player1HitsRatio, player1SixesRatio]
+player0Stats = [1-player1WinRatio, 1-player1ScoresRatio, 1-player1HitsRatio, 1-player1SixesRatio]
+
+# plot data:
+p0Bar = ax.bar(x - barWidth/2, player0Stats, barWidth, label='player0')
+p1Bar = ax.bar(x + barWidth/2, player1Stats, barWidth, label='player1')
+ax.legend((p0Bar, p1Bar), ('player0', 'player1'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

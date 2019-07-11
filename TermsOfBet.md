@@ -2,7 +2,7 @@ The bet between Pip and Anna concerns which ludo position is optimal for a two p
 
 E.g., if an observer is in front of a board in which the two players start on the top left (position 0, which will be referred to as player0) and top right (position 1, which will be referred to as player1), Pip would declare position 1 superior, and Anna would declare position 0 superior. (See: https://github.com/jaib1/ludoSim/blob/master/StandardLudoBoard.jpeg) 
 
-To determine if one position is superior, we run this simulation N times, with the null hypothesis that neither position is superior. After the simulation is run, if the number of times player1 wins has a probability of < 0.05 given the null hypothesis (that the null distribution is a binomial distribution with n=N and p=0.5), Pip wins the bet. Similarly, if the number of times player2 wins has a probability of < 0.05 given the same null hypothesis, Anna wins. Else, no one wins the bet. 
+To determine if one position is superior, we run this simulation N times, with the null hypothesis that neither position is superior. After the simulation is run, if the number of times player1 wins has a probability of < 0.05 given the null hypothesis (that the null distribution is a binomial distribution with n=N and p=0.5), Pip wins the bet. Similarly, if the number of times player0 wins has a probability of < 0.05 given the same null hypothesis, Anna wins. Else, no one wins the bet. 
 
 E.g., if N = 10000, s.d. = 50, so if player1 wins >=5100 times Pip wins, and if player2 wins >=5100 times Anna wins. Else, no one wins the bet.
 
