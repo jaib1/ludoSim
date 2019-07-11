@@ -90,6 +90,8 @@ ax.set_title('Binomial PMF for n=%i and p= 0.5' % (numGames))
 ax.set_ylabel('Probability')
 ax.set_xlabel('Events')
 ax.legend()
+pStr = ('p=%f' % (pVal))
+ax.text(0.05, 0.95, pStr, verticalalignment='top', transform=ax.transAxes)
 
 # to save data:
 # filename = 'ludoSim/analysis/gamesResults.out'
