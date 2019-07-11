@@ -126,7 +126,7 @@ class Board():
         Starts and runs the game of ludo.
         """
         turnNumber = 0
-        
+
         while self.__winner == []:
             # roll die and record roll
             roll = random.randint(1,6)

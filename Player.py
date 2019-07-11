@@ -193,11 +193,12 @@ class Player():
             pieceToMove = activePieceIDs[rollPosns.index(canHitPos[0])]
         elif canMoveInScoreArm: # if we have a piece in score arm, move it, else check for blocks
             pieceToMove = canMoveInScoreArm[0]
-        elif blockPosns:    
+        elif blockPosns:
+            # piece must already be past any blocks
             piecesToMove = [activePieceIDs[piece] for piece 
                            in range(0, len(self.__activePieces)) 
                            for block in range(0, len(blockPosns))
-                           if (rollPosns[piece] < blockPosns[block])]
+                           if (rollPosns[piece] > blockPosns[block])]
             
             if piecesToMove:                  
                 pieceToMove = random.choice(piecesToMove)
