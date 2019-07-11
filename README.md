@@ -2,7 +2,7 @@ This repository contains code to create a simple ludo simulator in Python to set
 
 The root folder contains this 'README', a 'TermsOfBet' file, and the source code that executes when running the ludo simulator. 
 
-The 'analysis' folder contains code that is used to run the ludo simulator a set number of times and determine the outcome of the bet, and figures showing results. The `analysis/gameAnalysis.py` contains information and code for running a set number of 2 player games, with those players taking the positions of 'player 0' and 'player 1' (see https://github.com/jaib1/ludoSim/blob/master/StandardLudoBoard.png). Saved results already exist in the `analysis/gamesResults.out` file. To load that data and see the results, follow the instructions at the bottom of the `analysis/gameAnalysis.py` file. 
+The 'analysis' folder contains code that is used to run the ludo simulator a set number of times and determine the outcome of the bet, and figures showing results. The `analysis/gameAnalysis.py` contains information and code for running a set number of 2 player games, with those players taking the positions of 'player 0' and 'player 1' (see https://github.com/jaib1/ludoSim/blob/master/StandardLudoBoard.png). Saved data from running 10000 simulations already exists in the `analysis/gamesResults.out` file. To load that data and see the results, follow the instructions at the bottom of the `analysis/gameAnalysis.py` file. 
 
 The 'tests' folder contains unit tests for confirming the source code is functioning as expected. (These tests are to be run in the 'pytest' framework: to run these tests, follow the instructions in the 'runTest.py' file) 
 

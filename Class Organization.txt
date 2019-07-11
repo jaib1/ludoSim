@@ -80,33 +80,7 @@ Gameplay:
 2) there is a block
 3) would go past score arm
 
-things to test:
+things left to analyze:
 
-1) roll of 6
-2) scoring
-3) hitting another piece (+ hitting another piece on move out of home base)
-4) can't make a move (block)
-5) integration test starting from `board.playGame`
-
-figure out how to run tests succinctly.
-
-create analysis code:
-
-- look over files: fix docs/typos
-
-- edit ludo .jpg to show relevant positions for >2 player games
-
-for each game: winner, score, hits, rolls
-- save variables in 'gameResults.out' file w/ shelve
-
-- plot player totals: winners, scores, hits, 6's
-
-- plot binom PDF w/player 1's total win probability
-
-- % of time player with more hits and more 6's won (2x2 matrix)
-	- player 1's % within each box in this matrix
-
-- plot 3 player game winners totals
-- plot 4 player game winners totals
-
-- update README w/notes on analysis folder/files
+- plot 3-player game winners totals
+- plot 4-player game winners totals

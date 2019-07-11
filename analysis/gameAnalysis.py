@@ -46,34 +46,14 @@ for game in range(0,numGames):
     
 toc = timeit.default_timer()
 player1WinRatio = player1Wins/numGames
+pVal = binom.cdf(numGames-player1Wins, numGames, 0.5)
 print('It took %f seconds to run %i games' % ((toc-tic), numGames))
 print('Winning ratio of player 1: %f' % (player1WinRatio))
+print('Probability of player1 winning', player1Wins, 'games assuming the \
+      results come from a binomial distribution with p= 0.5 and n=', \
+      numGames, 'is', pVal)
 
-
-# to save data:
-# filename = 'ludoSim/analysis/gamesResults.out'
-# shelf = shelve.open(filename, 'n')
-# shelf['boards'] = globals()['boards']
-# shelf['scores'] = globals()['scores']
-# shelf['hits'] = globals()['hits']
-# shelf['sixes'] = globals()['sixes']
-# shelf['numGames'] = globals()['numGames']
-# shelf['player1Wins'] = globals()['player1Wins']
-# shelf['player1WinRatio'] = globals()['player1WinRatio']
-# shelf.close()
-
-# to load data, run:
-# shelf = shelve.open(filename)
-# globals()['boards'] = shelf['boards]
-# globals()['scores'] = shelf['scores']
-# globals()['hits'] = shelf['hits']
-# globals()['sixes'] = shelf['sixes']
-# globals()['numGames'] = shelf['numGames']
-# globals()['player1Wins'] = shelf['player1Wins']
-# globals()['player1WinRatio'] = shelf['player1WinRatio']
-# shelf.close()
-
-# to plot data:
+# to plot data (bar plots):
 
 # set figure and axis:
 fig, ax = plt.subplots()
@@ -97,8 +77,44 @@ p0Bar = ax.bar(x - barWidth/2, player0Stats, barWidth, label='player0')
 p1Bar = ax.bar(x + barWidth/2, player1Stats, barWidth, label='player1')
 ax.legend((p0Bar, p1Bar), ('player0 (Anna\'s)', 'player1 (Pip\'s)'))
 
+# to plot data (binom pmf):
 
+x = np.arange(binom.ppf((pVal * .01), numGames, 0.5), 
+              binom.ppf((1 - (pVal * .01)), numGames, 0.5)) # get xmin and xmax
+fig, ax = plt.subplots()
+gamePMF = binom.pmf(x, numGames, 0.5) # calculate pmf
+pmfPlot = ax.plot(x, gamePMF, label = 'PMF')
+player1Line = ax.vlines(player1Wins, 0, np.max(gamePMF), colors='r', 
+                        label='Number of player1 Wins') # plot vertical line for `player1Wins`
+ax.set_title('Binomial PMF for n=%i and p= 0.5' % (numGames))
+ax.set_ylabel('Probability')
+ax.set_xlabel('Events')
+ax.legend()
 
+# to save data:
+# filename = 'ludoSim/analysis/gamesResults.out'
+# shelf = shelve.open(filename, 'n')
+# shelf['boards'] = globals()['boards']
+# shelf['scores'] = globals()['scores']
+# shelf['hits'] = globals()['hits']
+# shelf['sixes'] = globals()['sixes']
+# shelf['numGames'] = globals()['numGames']
+# shelf['player1Wins'] = globals()['player1Wins']
+# shelf['player1WinRatio'] = globals()['player1WinRatio']
+# shelf['pVal'] = globals()['pVal']
+# shelf.close()
+
+# to load data, run:
+# shelf = shelve.open(filename)
+# globals()['boards'] = shelf['boards]
+# globals()['scores'] = shelf['scores']
+# globals()['hits'] = shelf['hits']
+# globals()['sixes'] = shelf['sixes']
+# globals()['numGames'] = shelf['numGames']
+# globals()['player1Wins'] = shelf['player1Wins']
+# globals()['player1WinRatio'] = shelf['player1WinRatio']
+# globals()['pVal'] = shelf['pVal']
+# shelf.close()
 
 
 
