@@ -7,6 +7,7 @@ import timeit
 import shelve
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import binom
 
 numGames = 10000
 
@@ -80,7 +81,7 @@ ax.set_title('Game Results')
 ax.set_ylabel('Relative Counts')
 xlabels = ('Wins', 'Scores', 'Hits', 'Rolls of 6')
 x = np.arange(len(xlabels)) # arrange the labels evenly on x-axis
-barWidth = 0.25 # width of bars in graph
+barWidth = 0.375 # width of bars in graph
 ax.set_xticks(x)
 ax.set_xticklabels(xlabels)
 
@@ -94,7 +95,7 @@ player0Stats = [1-player1WinRatio, 1-player1ScoresRatio, 1-player1HitsRatio, 1-p
 # plot data:
 p0Bar = ax.bar(x - barWidth/2, player0Stats, barWidth, label='player0')
 p1Bar = ax.bar(x + barWidth/2, player1Stats, barWidth, label='player1')
-ax.legend((p0Bar, p1Bar), ('player0', 'player1'))
+ax.legend((p0Bar, p1Bar), ('player0 (Anna\'s)', 'player1 (Pip\'s)'))
 
 
 

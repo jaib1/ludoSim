@@ -4,7 +4,7 @@ E.g., if an observer is in front of a board in which the two players start on th
 
 To determine if one position is superior, we run this simulation N times, with the null hypothesis that neither position is superior. After the simulation is run, if the number of times player1 wins has a probability of < 0.05 given the null hypothesis (that the null distribution is a binomial distribution with n=N and p=0.5), Pip wins the bet. Similarly, if the number of times player0 wins has a probability of < 0.05 given the same null hypothesis, Anna wins. Else, no one wins the bet. 
 
-E.g., if N = 10000, s.d. = 50, so if player1 wins >=5100 times Pip wins, and if player2 wins >=5100 times Anna wins. Else, no one wins the bet.
+E.g., if N = 10000, s.d. = 50, so if player1 wins >=5100 times Pip wins, and if player0 wins >=5100 times Anna wins. Else, no one wins the bet.
 
 Player moves are chosen randomly amongst the set of possible moves each turn, with two exceptions:
 
