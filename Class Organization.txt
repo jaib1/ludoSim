@@ -92,10 +92,21 @@ figure out how to run tests succinctly.
 
 create analysis code:
 
-for each game: winner, score, hits
-totals: winners, scores, hits
-how often does more hits = win?
-how often does more 6's = win?
+- look over files: fix docs/typos
 
-3 player game?
-4 player game?
+for each game: winner, score, hits, rolls
+- save variables in 'gameResults.out' file w/ shelve
+
+- plot player totals: winners, scores, hits, 6's
+
+- plot binom PDF w/player 1's total win probability
+
+- % of time player with more hits and more 6's won (2x2 matrix)
+	- player 1's % within each box in this matrix
+
+- plot 3 player game winners totals
+- plot 4 player game winners totals
+
+- edit ludo .jpg to show relevant positions for >2 player games
+
+- update README w/notes on analysis folder/files
