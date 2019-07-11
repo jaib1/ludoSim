@@ -1,4 +1,4 @@
-class Piece(): 
+class Piece():
     """
     A class which represents a player's piece in a ludo game. Instantiated and 
     used by `Player`.
@@ -20,19 +20,14 @@ class Piece():
         
     def __init__(self, playerID, pieceID):
         """
-        The constructor requires the id of the player the piece belongs to.
+        The constructor requires the id of the player the piece belongs to, and
+        an id to distinguish it from the other player's pieces. This function 
+        is called by `Player` upon the construction of `Player`.
         
         Parameters
         -----------
         playerID
         pieceID
-        
-        Examples
-        --------
-        p = Piece(1,1)
-        
-        p = Piece(pieceID=2, playerID=2)
-        
         """
         
         self.__playerID = playerID
@@ -43,5 +38,5 @@ class Piece():
         
     def __iter__(self):
         """
-        Generator Function to use class as iterator.
+        Generator function to use class as iterator.
         """

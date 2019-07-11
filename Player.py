@@ -10,16 +10,19 @@ class Player():
     
     Attributes:
         __board: The Board object which is the Player's parent.
-        __id: The home base (of the four possible bases) of the player.
-            The home base serves as the player's ID, and designates the
-            player's start position and score base position in terms of the
+        __id: A number which represents the player's ID, according to their 
+            home base (one of four possible bases). This attribute designates
+            the player's start position and score arm position in terms of the
             board space numberings.
         __startPos: The board space number associated with the board space a 
           player's piece starts on upon leaving the home base with a roll of 6.
-      	__homePieces: The player's pieces currently in the their home base.
-      	__activePieces: The player's pieces currently on the ludo board.
-      	__scorePieces: The player's pieces currently in their score base.
-      	__score: The player's current score.
+      	__homePieces: An array of Piece objects representing the player's 
+            pieces that are currently in their home base.
+      	__activePieces: An array of Piece objects representing the player's 
+            pieces that are currently on the ludo board.
+      	__scorePieces: An array of Piece objects representing the player's 
+            pieces that are currently in their score base.
+      	__score: A number which represents the player's current score.
     """
     
     # define and limit attributes:
@@ -32,20 +35,13 @@ class Player():
         """
         The constructor requires the home base position, the number of 
         pieces, and the start position upon leaving the home base on a roll of 
-        6. Based on these parameters, the constructor initializes the
-        `__id`, `__startPos`, `__pieces`, and `__homePieces` attributes. 
+        6. This function is called by `Board` upon the construction of `Board`.
         
         Parameters
         -----------
         board
         id
         startPos
-        
-        Examples
-        --------
-        b = Board()
-        p = Player(b, 0, 0)
-        
         """
         
         self.__board = board
@@ -60,24 +56,17 @@ class Player():
         
     def __iter__(self):
         """
-        Generator Function to use class as iterator.
+        Generator function to use class as iterator.
         """
     
     def makeMove(self, roll):
         """
         Takes a simulated die roll and subsequently moves a piece, if
-        possible, for the player.
+        possible, for the player. This function is called by `Board/playGame`.
         
         Parameters
         ----------
-        roll: a simulated die roll
-        
-        Examples
-        --------
-        roll = random.randint(1,6)
-        p.makeMove(roll)
-        
-        p.makeMove(6)   
+        roll: a simulated die roll           
         """
         
         # special case if roll == 6 and no pieces in play
@@ -90,8 +79,10 @@ class Player():
 
     def leaveHome(self):
         """
-        Moves a piece out of home base and onto board.
+        Moves a piece out of home base and onto the board. This function can be
+        called by `makeMove` or `moveHeuristic`.
         """
+
         # move a piece out from home base and get its piece num
         self.__activePieces.append(self.__homePieces.pop())
         # move that piece to the start position
@@ -124,18 +115,12 @@ class Player():
         preference): 1) trying to hit another player's piece, 2) not moving 
         within a die roll of another player's piece, 3) moving up in the score 
         arm. This function also makes sure a potential move cannot take place
-        if that move would overtake a block.
+        if that move would overtake a block. This function is called by 
+        `makeMove`.
         
         Parameters
         ----------
-        roll: a simulated die roll
-        
-        Examples
-        --------
-        roll = random.randint(1,6)
-        p.moveHeuristic(roll)
-        
-        p.moveHeuristic(6)   
+        roll: a simulated die roll          
         """        
         # get necessary info from board
         allPiecePosns = self.__board._Board__piecePosns
@@ -151,13 +136,13 @@ class Player():
         
         pieceToMove = []
         
-# cmntd out: using `map` and `zip(*)` to unzip two lists (pythonic but unnecessary)      
-#        # get our potential positions
-#        activePieceIDs, rollPosns = (
-#            map(list, zip(
-#                *[[self.__activePieces[piece]._Piece__pieceID, 
-#                self.__activePieces[piece]._Piece__boardPos + roll] 
-#                for piece in range(0, len(self.__activePieces))])))
+## cmntd out: using `map` and `zip(*)` to unzip two lists (pythonic but unnecessary)
+##        # get our potential positions
+##        activePieceIDs, rollPosns = (
+##            map(list, zip(
+##                *[[self.__activePieces[piece]._Piece__pieceID,
+##                self.__activePieces[piece]._Piece__boardPos + roll]
+##               for piece in range(0, len(self.__activePieces))])))
         
         # get our active piece IDs
         activePieceIDs = [self.__activePieces[piece]._Piece__pieceID 
@@ -234,7 +219,8 @@ class Player():
     def updateGame(self, roll, pieceToMove, activePieceIDs, canHitPos):
         """
         Updates the game state after a player rolls and decides which piece to
-        move.
+        move. This function is called by `moveHeuristic` when a move is able to
+        be made.
         
         Parameters
         ----------
@@ -244,12 +230,9 @@ class Player():
             active pieces
         canHitPos: a number representing the board position on which a hit move 
             will take place (this value will be empty if a hit move is not 
-            possible)
-        
-        Examples
-        --------
-        
+            possible)       
         """
+
         # the move: 1) update piece `__boardPos`, `__moveCount`, `__scoreArmPos`;
         # 2) update player '__score' and '__scorePieces'; 
         # 3) update board `__score` and `__piecePosns`     
@@ -301,15 +284,12 @@ class Player():
     def hitPiece(self, boardPos):
         """
         Executes the mechanics of finding out which opponent's piece was hit
-        when a hit move is executed, and updates the board accordingly.
+        when a hit move is executed, and updates the board accordingly. This
+        function can be called by `moveHeuristic` or `leaveHome`.
         
         Parameters
         -----------
         boardPos: the new boardPos of the piece that will be moved
-        
-        Examples
-        --------
-        
         """
         
         # get the hit opponent's playerID and pieceID:

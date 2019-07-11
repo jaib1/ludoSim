@@ -94,6 +94,8 @@ create analysis code:
 
 - look over files: fix docs/typos
 
+- edit ludo .jpg to show relevant positions for >2 player games
+
 for each game: winner, score, hits, rolls
 - save variables in 'gameResults.out' file w/ shelve
 
@@ -106,7 +108,5 @@ for each game: winner, score, hits, rolls
 
 - plot 3 player game winners totals
 - plot 4 player game winners totals
-
-- edit ludo .jpg to show relevant positions for >2 player games
 
 - update README w/notes on analysis folder/files
