@@ -13,4 +13,7 @@ b = Board() # look at the optional input args to set the board however you'd lik
 b.playGame()
 ```
 
-*Note, this package was created within the Anaconda 5.3.0 distribution (running Python 3.7.0), and imports some packages native to Anaconda 5.3.0. For best results, run this code within Anaconda 5.3.0*
+*Note, this package was created using the Anaconda package manager distribution (5.3.0, running Python 3.7.0), and imports some packages native to Anaconda. For best results, download and install (Anaconda)[https://www.anaconda.com/distribution], navigate to the local folder where you have cloned or installed this repository, and in your conda terminal run:
+`conda activate ludoSim_env`
+to activate the environment with the appropriate package dependencies which were used at the time this package was created*
+
