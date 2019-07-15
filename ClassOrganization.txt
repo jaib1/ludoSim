@@ -82,5 +82,6 @@ Gameplay:
 
 things left to analyze:
 
+- add counts for pieces moved back when hit
 - plot 3-player game winners totals
 - plot 4-player game winners totals

@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: ludoSim-jaib1
-Version: 0.0.1
+Version: 0.0.2
 Summary: A small ludo simulator
 Home-page: https://github.com/jaib1/ludoSim
 Author: Jai Bhagat
 Author-email: dudecmonitsme@gmail.com
-License: GNU General Public License v3.0
+License: GNU General Public License v3
 Description: This repository contains code to create a simple ludo simulator in Python to settle a bet between Pip and Anna.
         
         The root folder contains this `README.md`, a `LICENSE.MD` file containing an open-source license, a `TermsOfBet.md` file outlining the terms of the bet, an image (`StandardLudoBoard.png`) containing the standard ludo board used and the positions favored by Anna and Pip for the bet, a `__init__.py` file for marking this repository as a package and initializing the package when importing, a `ludoSim_env.yml` file for setting a virtual environment in which to use this package, a `setup.py` file for configuring this repository as a distributable package, a `ClassOrganization.txt` file containing early-stage notes on source code organization, and the source code (`Board.py`, `Player.py`, `Piece.py`) that executes when running the ludo simulator. 
@@ -34,7 +34,7 @@ Keywords: ludo simulator bet
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.7
-Classifier: License :: OSI Approved :: GNU General Public License v3.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3
 Description-Content-Type: text/markdown
