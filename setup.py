@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='ludoSim-jaib1',
-    version='0.0.3',
+    version='0.0.4',
     author='Jai Bhagat',
     author_email='dudecmonitsme@gmail.com',
     license='GNU General Public License v3',
@@ -16,7 +16,7 @@ setuptools.setup(
     packages=['ludoSim'],
     #packages=setuptools.find_packages(exclude=['docs', 'tests']),
     package_data={        
-        'ludoSim': ['*.*', 'analysis/*.*',],
+        'ludoSim': ['*.*', 'analysis/*.*', 'LICENSE'],
     },
     keywords='ludo simulator bet',
     python_requires='>=3',

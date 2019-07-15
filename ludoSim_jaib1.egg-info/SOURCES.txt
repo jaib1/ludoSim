@@ -2,6 +2,7 @@ README.md
 setup.py
 ludoSim/Board.py
 ludoSim/ClassOrganization.txt
+ludoSim/LICENSE
 ludoSim/Piece.py
 ludoSim/Player.py
 ludoSim/README.md
