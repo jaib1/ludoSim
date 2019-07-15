@@ -9,7 +9,7 @@ setuptools.setup(
     author='Jai Bhagat',
     author_email='dudecmonitsme@gmail.com',
     license='GNU General Public License v3',
-    description='A small ludo simulator',
+    description='A simple ludo simulator',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/jaib1/ludoSim',
