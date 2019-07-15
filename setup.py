@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='ludoSim-jaib1',
-    version='0.0.2',
+    version='0.0.3',
     author='Jai Bhagat',
     author_email='dudecmonitsme@gmail.com',
     license='GNU General Public License v3',
