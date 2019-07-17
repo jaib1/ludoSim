@@ -10,12 +10,15 @@ ludoSim/StandardLudoBoard.png
 ludoSim/TermsOfBet.md
 ludoSim/__init__.py
 ludoSim/ludoSim_env.yml
+ludoSim/setup.py
 ludoSim/analysis/binomialPMF.png
 ludoSim/analysis/gameAnalysis.py
 ludoSim/analysis/gamesResults.out.bak
 ludoSim/analysis/gamesResults.out.dat
 ludoSim/analysis/gamesResults.out.dir
 ludoSim/analysis/playerStats.png
+ludoSim/tests/runTests.py
+ludoSim/tests/test_ludo.py
 ludoSim_jaib1.egg-info/PKG-INFO
 ludoSim_jaib1.egg-info/SOURCES.txt
 ludoSim_jaib1.egg-info/dependency_links.txt
